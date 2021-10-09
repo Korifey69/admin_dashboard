@@ -3,6 +3,7 @@ const app = express();
 const config = require("../../config/config.json");
 const Mongo = require("../db/mongo");
 const { User, Auth } = require("../../constrollers");
+const roleMiddleware = require("../../middleware/roleMiddleware");
 
 class Server {
     constructor() {
@@ -16,12 +17,14 @@ class Server {
 
     async init() {
         const mongoDB = await this._mongo.connect();
-        console.log(mongoDB);
+
         const user = new User();
         const auth = new Auth();
         
-        app.use("/api", user.routers);
+        app.use(express.json());
         app.use("/api", auth.routers);
+        app.use("/api", roleMiddleware(["ADMIN"]), user.routers);
+        
     }
 
     async run() {

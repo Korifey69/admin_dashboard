@@ -7,7 +7,6 @@ class Mongo {
     }
 
     async connect() {
-        console.log(this._conectionURL, this._options);
         return mongoose.connect(this._conectionURL, this._options);
     }
 }

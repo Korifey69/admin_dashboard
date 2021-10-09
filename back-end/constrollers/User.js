@@ -1,6 +1,13 @@
+const User = require("../models/User");
+const Role = require("../models/Role");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { validationResult } = require("express-validator");
+const { check } = require("express-validator");
+const { secret } = require("../config/config.json");
 const Base = require("./Base");
 
-class User extends Base {
+class Users extends Base {
 	constructor() {
 		super();
 	}
@@ -8,51 +15,38 @@ class User extends Base {
 	get routers() {
 		const router = this.router;
 
-		router.route("/user").get(this.user);
-		router.route("/users").get(this.users);
+		router.route("/user/:name").get(this.user);
+		router.get("/users", this.users);
 
 		return router;
 	}
 
-	user(request, response) {
-		return response
-			.status(200)
-			.json({
+	async user(request, response) {
+		try {
+			const { name } = request.params;
+
+            const user = await User.findOne({"username": name});
+
+            response.status(200).json({
 				status: 200,
-				payload: {
-					name: "Ivan",
-					surname: "Ivanov",
-					birthday: "1970-01-01"
-				}
-			})
-			.end();
+				user,
+			});
+        } catch (e) {
+            console.log(e)
+        }
 	}
 
-	users(request, response) {
-		return response
-			.status(200)
-			.json({
+	async users(request, response) {
+		try {
+            const users = await User.find();
+            response.status(200).json({
 				status: 200,
-				payload: [
-					{
-						name: "Ivan",
-						surname: "Ivanov1",
-						birthday: "1970-01-01"
-					},
-					{
-						name: "Ivan",
-						surname: "Ivanov2",
-						birthday: "1970-01-01"
-					},
-					{
-						name: "Ivan",
-						surname: "Ivanov3",
-						birthday: "1970-01-01"
-					}
-				]
-			})
-			.end();
+				users,
+			});
+        } catch (e) {
+            console.log(e)
+        }
 	}
 }
 
-module.exports = User;
+module.exports = Users;
