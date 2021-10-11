@@ -1,3 +1,4 @@
+import React from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,7 +11,6 @@ import Dashboard from "./pages/dashboard/Dashboard";
 
 function App() {
   return (
-    
     <div className="App">
       <Router>
         <Switch>
@@ -21,6 +21,9 @@ function App() {
             <Register />
           </Route>
           <Route path="/dashboard">
+            <Dashboard />
+          </Route>
+          <Route path="/offline">
             <Dashboard />
           </Route>
         </Switch>
