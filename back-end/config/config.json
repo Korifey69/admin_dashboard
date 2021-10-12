@@ -1,6 +1,6 @@
 {
     "mongo": {
-        "conectionURL": "mongodb://127.0.0.1:27017/stell_trace_db",
+        "conectionURL": "mongodb://localhost:27017/stell_trace_db",
         "options": { 
             "useUnifiedTopology": true,
             "useNewUrlParser": true 

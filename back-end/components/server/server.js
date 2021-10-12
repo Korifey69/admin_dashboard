@@ -16,7 +16,7 @@ class Server {
     }
 
     async init() {
-        const mongoDB = await this._mongo.connect();
+        await this._mongo.connect();
 
         const user = new User();
         const auth = new Auth();
@@ -26,10 +26,9 @@ class Server {
             res.header("Access-Control-Allow-Origin", "*");
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
             next();
-          });
+        });
         app.use("/api", auth.routers);
-        app.use("/api", roleMiddleware(["ADMIN"]), user.routers);
-        
+        app.use("/api", roleMiddleware(["ADMIN"]), user.routers);        
     }
 
     async run() {
